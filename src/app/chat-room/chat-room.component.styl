@@ -1,0 +1,114 @@
+.outer-wrapper
+  display flex
+
+  width 100%
+  height 100%
+
+  padding 0
+  margin 0
+
+  .nav
+    display flex
+    align-items center
+
+    padding-left 30px
+    padding-right 30px
+
+    height 60px
+
+    font-family "Lato"
+    font-weight bold
+    font-size 20px
+
+  .interactive-board
+    width 23em
+
+  .chat-board
+    display flex
+    flex-flow column nowrap
+
+    background #fafafa
+    box-shadow -1px 0 2px #ccc
+
+    flex 1 1 auto
+
+    .nav
+        border-bottom 1px solid #eee
+
+    .conversation
+      flex 1 1 auto
+
+      padding-top 30px
+      padding-bottom 30px
+      width 100%
+
+      border-bottom 1px solid #eee
+
+      color #333
+      font-family Lato
+      font-size 16px
+
+      overflow-y auto
+
+      .message
+        display flex
+        padding 8px 30px 8px 30px
+
+        &:hover
+          background white
+
+          cursor pointer
+
+        .padding
+          padding-right 14px
+
+          .image
+            width 64px
+            height 64px
+
+            color transparent
+
+            object-fit cover
+            background-position center
+
+            border-radius 50%
+            border none
+
+            overflow hidden
+
+        .template
+          .header
+            .username
+              margin-right 10px
+
+              font-size 17px
+              font-weight bolder
+
+            .time
+              font-size 14px
+              color #888
+
+          .content
+            font-size 17px
+            background transparent
+
+    .chat-input
+      display flex
+
+      flex 0 0 auto
+      padding 20px 30px 25px 30px
+
+      input
+        padding 12px 10px
+
+        flex 1 1 auto
+        border 1px solid #aaa
+
+        color #333
+        font-family Lato
+        font-size 16px
+
+        background transparent
+
+        outline none
+        border-radius 3px

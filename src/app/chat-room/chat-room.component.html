@@ -1,0 +1,62 @@
+<div class="outer-wrapper">
+  <div class="interactive-board">
+    <div class="nav">
+      <nav>Result</nav>
+    </div>
+  </div>
+
+  <div class="chat-board">
+    <div class="nav">
+      <nav>Back</nav>
+    </div>
+
+    <div class="conversation">
+      <ng-template ngFor let-message [ngForOf]="messages">
+            <div class="message">
+              <div class="padding">
+                <img class="image" [src]="userImages[message.username]" alt="user">
+              </div>
+
+              <div class="template">
+                <div class="header">
+                    <span class="username">
+                      <b>{{message.username}}</b>
+                    </span>
+
+                    <span class="time">
+                      <time>{{message.time | date: "hh:mm"}}</time>
+                    </span>
+                </div>
+
+                <div class="content" [ngSwitch]="message.type">
+                    <div *ngSwitchCase="'time'">
+
+                    </div>
+
+                    <div *ngSwitchCase="'chat-box'">
+                      <app-chat-box>
+                        {{message.content}}
+                      </app-chat-box>
+                    </div>
+
+                    <div *ngSwitchCase="'checkboxes'">
+                      <app-checkboxes>
+
+                      </app-checkboxes>
+                    </div>
+                </div>
+              </div>
+            </div>
+      </ng-template>
+    </div>
+
+    <div class="chat-input">
+      <input
+      #chatInput type="text"
+      (keydown.enter)="
+        send(chatInput.value);
+        chatInput.value = ''"
+        placeholder="Type a message...">
+    </div>
+  </div>
+</div>
