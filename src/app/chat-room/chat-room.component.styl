@@ -1,3 +1,13 @@
+*::-webkit-scrollbar
+  width 10px
+
+*::-webkit-scrollbar-track
+  background #ddd
+
+*::-webkit-scrollbar-thumb
+  background #888
+  width 10px
+
 .outer-wrapper
   display flex
 
@@ -25,12 +35,22 @@
       text-decoration none
 
   .interactive-board
+    display flex
+    flex-flow column nowrap
     width 23em
 
     box-shadow 0 10px 15px #ddd
 
     border-radius 5px
     z-index 2
+
+    .nav
+      flex 0 0 auto
+
+    .result-list
+      flex 1 1 auto
+      overflow-y auto
+      overflow-x hidden
 
   .chat-board
     display flex
@@ -187,6 +207,7 @@
 
       input
         padding 12px 10px
+        padding-right 48px
 
         flex 1 1 auto
         border 1px solid #aaa
