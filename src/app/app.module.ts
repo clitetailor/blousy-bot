@@ -9,6 +9,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { ChatBoxComponent } from './chat-room/chat-box/chat-box.component';
 import { CheckboxesComponent } from './chat-room/checkboxes/checkboxes.component';
+import { ResultListItemComponent } from './chat-room/result-list-item/result-list-item.component';
 
 const appRoutes = [
   { path: '', component: HomePageComponent },
@@ -21,7 +22,8 @@ const appRoutes = [
     HomePageComponent,
     ChatRoomComponent,
     ChatBoxComponent,
-    CheckboxesComponent
+    CheckboxesComponent,
+    ResultListItemComponent
   ],
   imports: [
     BrowserModule,

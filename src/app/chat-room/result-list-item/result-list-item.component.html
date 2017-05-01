@@ -1,0 +1,25 @@
+<div class="content" (click)="collapse = !collapse">
+  <div class="line">
+    <p class="title">
+      <ng-content></ng-content>
+    </p>
+
+    <p class="percent">{{possibility | percent}}</p>
+  </div>
+
+  <div class="progress-bar" *ngIf="!!possibility">
+    <div class="progress" [style.width]="possibility | percent"></div>
+  </div>
+</div>
+
+<div class="collapsible" [class.collapse]="collapse" *ngIf="!!info || !!list">
+  <p>
+    {{info}}
+  </p>
+
+  <ul class="list">
+    <li *ngFor="let item of list">
+      {{item}}
+    </li>
+  </ul>
+</div>

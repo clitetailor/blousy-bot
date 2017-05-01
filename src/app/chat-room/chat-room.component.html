@@ -1,20 +1,48 @@
 <div class="outer-wrapper">
   <div class="interactive-board">
-    <div class="nav">
-      <nav>Result</nav>
-    </div>
+      <div class="nav">
+        <nav>Result</nav>
+      </div>
+
+      <div class="result-list">
+        <ng-template ngFor [ngForOf]="results" let-result>
+            <app-result-list-item
+            class="result-lits-item"
+            [possibility]="result.possibility"
+            [info]="result.info"
+            [list]="result.list">
+              {{result.title}}
+            </app-result-list-item>
+        </ng-template>
+      </div>
   </div>
 
   <div class="chat-board">
     <div class="nav">
-      <nav>Back</nav>
+      <a href="/">
+        <nav>Back</nav>
+      </a>
     </div>
 
     <div class="conversation">
       <ng-template ngFor let-message [ngForOf]="messages">
             <div class="message">
               <div class="padding">
-                <img class="image" [src]="userImages[message.username]" alt="user">
+                <div
+                class="image"
+                [style.background-image]="'url(' + userImages[message.username] + ')'">
+                    <div class="dropdown">
+                      <div class="dropdown-image"
+                      [style.background-image]="'url(' + userImages[message.username] + ')'">
+                          <div class="cover">
+                          </div>
+
+                          <div class="headline">
+                            {{message.username}}
+                          </div>
+                      </div>
+                    </div>
+                </div>
               </div>
 
               <div class="template">
@@ -40,8 +68,8 @@
                     </div>
 
                     <div *ngSwitchCase="'checkboxes'">
-                      <app-checkboxes>
-
+                      <app-checkboxes [checklist]="message.content.checklist">
+                        {{message.content.title}}
                       </app-checkboxes>
                     </div>
                 </div>

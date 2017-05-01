@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as Message from '../message'
 
 @Component({
   selector: 'app-checkboxes',
@@ -12,4 +13,7 @@ export class CheckboxesComponent implements OnInit {
   ngOnInit() {
   }
 
+  @Input('checklist') checklist: Message.ICheckList[];
+
+  @Output('submit') submit: EventEmitter<any> = new EventEmitter();
 }

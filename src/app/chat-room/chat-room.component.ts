@@ -1,27 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-export interface IMessage {
-  type: string,
-  time: Date,
-  username: string
-}
-
-export interface IChatBox extends IMessage {
-  type: 'chat-box',
-  time: Date,
-  content: string
-}
-
-export interface ICheckBoxes extends IMessage {
-  type: 'checkboxes',
-  time: Date,
-  choices: {
-    checked: boolean,
-    content: string
-  }[]
-}
-
-export type Message = IChatBox | ICheckBoxes;
+import * as Message from './message'
+import * as Result from './result'
 
 @Component({
   selector: 'app-chat-room',
@@ -30,7 +9,7 @@ export type Message = IChatBox | ICheckBoxes;
 })
 export class ChatRoomComponent implements OnInit {
 
-  private messages: Message[] = [{
+  private messages: Message.Message[] = [{
     type: 'chat-box',
     time: new Date(),
     content: 'show me something!',
@@ -39,13 +18,28 @@ export class ChatRoomComponent implements OnInit {
     type: 'checkboxes',
     time: new Date(),
     username: 'bot',
-    choices: []
+    content: {
+      title: "what do you think?",
+      checklist: [{
+          checked: false,
+          content: "bla, bla, bla, bla"
+        }, {
+          checked: true,
+          content: "i love milk"
+        }]
+    }
   }]
 
   private userImages = {
     clitetailor: "../../assets/clitetailor.jpg",
-    bot: "../../assets/icon2.png"
+    bot: "../../assets/blousy-bot.png"
   }
+
+  private results: Result.ResultItem[] = [{
+    title: "milk",
+    possibility: 0.8,
+    list: ["liquid", "sweet"]
+  }]
 
   constructor() { }
 
@@ -53,7 +47,7 @@ export class ChatRoomComponent implements OnInit {
 
   }
 
-  send(content) {
-
+  send(msg:string) {
+    this.messages.push({ type: 'chat-box', time: new Date(), username: "clitetailor", content: msg })
   }
 }

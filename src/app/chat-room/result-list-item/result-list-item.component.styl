@@ -1,0 +1,69 @@
+@keyframes fill-in
+  0%
+    width 0px
+
+  100%
+    width attr(width)
+
+
+.content
+  padding 8px 30px
+
+  color #333
+
+  font-family Lato
+  font-size 17px
+  font-weight bold
+
+  cursor pointer
+
+  .line
+    display flex
+
+    .title
+      flex 1 1 auto
+
+    .percent
+      color #888
+      font-size 14px
+
+  .progress-bar
+    width 100%
+    height 10px
+
+    margin-top 8px
+    margin-bottom 8px
+
+    background #ddd
+    border-radius 2px
+
+    .progress
+      height 100%
+      background repeating-linear-gradient(-45deg,
+        yellowgreen 0,
+        yellowgreen 15px,
+        lighten(yellowgreen, 10) 15px,
+        lighten(yellowgreen, 10) 30px) top left fixed
+
+      border-radius 2px
+
+      animation fill-in 1s
+
+.collapsible
+  padding 8px 30px
+
+  color #333
+
+  font-family Lato
+  font-size 17px
+
+  overflow hidden
+
+  &.collapse
+    visibility hidden
+
+  .list
+    margin-top 0px
+    margin-bottom 0px
+
+    border-left 4px solid #ddd

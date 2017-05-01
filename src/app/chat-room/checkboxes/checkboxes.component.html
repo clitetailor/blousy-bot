@@ -1,3 +1,19 @@
 <p>
-  checkboxes works!
+  <ng-content></ng-content>
 </p>
+
+<ul class="checklist">
+  <li *ngFor="let li of checklist" (click)="li.checked = !li.checked">
+    <input
+    type="checkbox"
+    [checked]="li.checked"
+    class="checkbox">
+    {{li.content}}
+  </li>
+</ul>
+
+<button
+(click)="submit.emit($event)"
+(keydown.enter)="submit.emit($event)">
+  Submit
+</button>
