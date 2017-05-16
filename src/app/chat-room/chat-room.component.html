@@ -62,7 +62,7 @@
                     </div>
 
                     <div *ngSwitchCase="'chat-box'">
-                      <app-chat-box>
+                      <app-chat-box [list]="message.list">
                         {{message.content}}
                       </app-chat-box>
                     </div>

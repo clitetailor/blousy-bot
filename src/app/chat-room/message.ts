@@ -18,7 +18,8 @@ export interface IMessage {
 export interface IChatBox extends IMessage {
   type: 'chat-box',
   time: Date,
-  content: string
+  content: string,
+  list?: string[]
 }
 
 export interface ICheckBoxes extends IMessage {

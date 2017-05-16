@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../chat.service'
 import * as Message from './message'
 import * as Result from './result'
 
@@ -9,45 +10,36 @@ import * as Result from './result'
 })
 export class ChatRoomComponent implements OnInit {
 
-  private messages: Message.Message[] = [{
-    type: 'chat-box',
-    time: new Date(),
-    content: 'show me something!',
-    username: 'clitetailor',
-  }, {
-    type: 'checkboxes',
-    time: new Date(),
-    username: 'bot',
-    content: {
-      title: "what do you think?",
-      checklist: [{
-          checked: false,
-          content: "bla, bla, bla, bla"
-        }, {
-          checked: true,
-          content: "i love milk"
-        }]
-    }
-  }]
+  private messages: Message.Message[] = []
 
   private userImages = {
     clitetailor: "../../assets/clitetailor.jpg",
     bot: "../../assets/blousy-bot.png"
   }
 
-  private results: Result.ResultItem[] = [{
-    title: "milk",
-    possibility: 0.8,
-    list: ["liquid", "sweet"]
-  }]
+  private results: Result.ResultItem[] = []
 
-  constructor() { }
+  private exclusions = [];
+  private symptoms = [];
+
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
+    this.chatService.responseSource$.subscribe(message =>
+      this.messages.push(message));
 
+    this.chatService.liveResultSource$.subscribe(results => {
+      console.log(results);
+      this.results = results
+    })
   }
 
   send(msg:string) {
     this.messages.push({ type: 'chat-box', time: new Date(), username: "clitetailor", content: msg })
+
+    this.chatService.sendMessage(msg, {
+      exclusions: this.exclusions,
+      symptoms: this.symptoms
+    })
   }
 }
