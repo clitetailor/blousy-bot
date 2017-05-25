@@ -2,25 +2,32 @@ const session = require('./session')
 const tokenize = require('../tokenize');
 const immu = require('immu-func');
 const getNode = require('./utils/get-node')
-
+const getCollection = require('./utils/get-collection')
 
 function symptomsToIllnesses(symptoms = [], exclusions = []) {
   return session.run(`
         MATCH
           (s: Symptom)<-[:SYMPTOM]-(i: Illness),
-          (e: Symptom)<-[:SYMPTOM]-(i)
+          (e: Symptom)<-[:SYMPTOM]-(i),
+          (i)-[:SYMPTOM]->(sl: Symptom)
         WHERE
           id(s) IN extract(symptom IN {symptoms} | symptom.id)
           AND NOT id(e) IN extract(symptom IN {exclusions} | symptom.id)
-        RETURN
-          i AS illness,
+        WITH
+          i, sl,
           count(s) - count(e) * 0.3 AS rank
+        ORDER BY rank LIMIT 3
+        RETURN i AS illness, collect(sl) AS symptomList
       `,
       { symptoms, exclusions }
     )
     .then(result => {
       return result.records.map(record => {
-        return getNode(record, 'illness');
+        return immu.assign(
+          getNode(record, 'illness'),
+          {
+            symptoms: getCollection(record, 'symptomList')
+          });
       })
     })
     .catch(err => console.error(err))

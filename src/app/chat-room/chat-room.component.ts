@@ -92,6 +92,15 @@ export class ChatRoomComponent implements OnInit {
           }
         })
 
+        this.results = response.illnesses.map(illness => {
+          return {
+            title: illness.name,
+            list: illness.symptoms.map(symptom => {
+              return symptom.name
+            })
+          }
+        })
+
         break;
       }
 
