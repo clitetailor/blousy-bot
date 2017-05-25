@@ -1,6 +1,6 @@
 const session = require('./session')
 const tokenize = require('../tokenize');
-const getNode = require('./getNode')
+const getNode = require('./utils/get-node')
 
 function getIllness(sentence) {
   const words = tokenize(sentence);

@@ -1,10 +1,12 @@
 const session = require('./session')
 const tokenize = require('../tokenize');
-const immu = require('immu-func');
 const getNode = require('./utils/get-node')
+
 
 function responseImmediately(message) {
   const words = tokenize(message)
+
+  console.log(message)
 
   return session.run(`
         UNWIND {words} AS word
@@ -26,14 +28,14 @@ function responseImmediately(message) {
       { words }
     )
     .then(result => {
-      const response = getNode(result.record[0], 'response')
+      const response = getNode(result.records[0], 'response')
 
       return {
         type: 'response immediately',
-        reponse: response
+        message: response.text
       }
     })
     .catch(err => console.error(err))
 }
 
-module.exports = responseImmediately
+module.exports = responseImmediately;

@@ -24,22 +24,76 @@ export class ChatRoomComponent implements OnInit {
 
   constructor(private chatService: ChatService) { }
 
-  ngOnInit() {
-    this.chatService.responseSource$.subscribe(message =>
-      this.messages.push(message));
-
-    this.chatService.liveResultSource$.subscribe(results => {
-      console.log(results);
-      this.results = results
-    })
-  }
+  ngOnInit() { }
 
   send(msg:string) {
-    this.messages.push({ type: 'chat-box', time: new Date(), username: "clitetailor", content: msg })
-
-    this.chatService.sendMessage(msg, {
-      exclusions: this.exclusions,
-      symptoms: this.symptoms
+    this.messages.push({
+      type: 'chat-box',
+      time: new Date(),
+      username: "clitetailor",
+      content: msg
     })
+
+    this.chatService.sendMessage(msg)
+      .then(response => {
+        this.processResponse(response);
+      })
+  }
+
+  submit() {
+
+  }
+
+  processResponse(response) {
+    switch (response.type) {
+      case "list symptoms": {
+        this.messages.push({
+          type: 'chat-box',
+          username: 'bot',
+          time: new Date(),
+          content: `Các triệu chứng của bệnh ${response.illness} là:`,
+          list: response.symptoms
+        })
+
+        break;
+      }
+
+      case "response immediately": {
+        this.messages.push({
+          type: 'chat-box',
+          time: new Date(),
+          username: 'bot',
+          content: response.message
+        })
+
+        break;
+      }
+
+      case "predict illness": {
+        this.symptoms = response.symptoms;
+        this.exclusions = response.exclusions;
+
+        this.messages.push({
+          type: 'checkboxes',
+          time: new Date(),
+          username: 'bot',
+          content: {
+            title: 'Bạn có mắc phải triệu chứng nào trong các triệu chứng sau:',
+            checklist: response.otherSymptoms.map(symptom => {
+              return {
+                checked: false,
+                content: symptom.name
+              }
+            })
+          }
+        })
+
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
   }
 }

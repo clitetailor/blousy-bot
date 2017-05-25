@@ -5,23 +5,27 @@ function control(func, req, res) {
 
   if (func.type === "complex search") {
     if (func.name === "chuẩn đoán bệnh") {
-      const { exclusions, symptoms }
+      const { exclusions, symptoms } = req.body;
 
       db.predictIllness(message)
-        .then(res)
+        .then(result => res.json(result))
 
       return;
     }
 
     if (func.name === "liệt kê triệu chứng") {
       db.listSymptoms(message)
-        .then(res)
+        .then(result => res.json(result))
+
+      return;
     }
   }
 
   if (func.type === "response immediately") {
-    db.responseImmediately[message]
-      .then(res)
+    db.responseImmediately(message)
+      .then(result => res.json(result))
+
+    return;
   }
 }
 

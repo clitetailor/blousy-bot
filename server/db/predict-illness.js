@@ -1,10 +1,10 @@
 const session = require('./session')
-const tokenizer = require('../tokenizer');
+const tokenize = require('../tokenize');
 const immu = require('immu-func');
-const getNode = require('./utils/getNode')
+const getNode = require('./utils/get-node')
 
 
-function symptomsToIllnesses(symptoms, exclusions = []) {
+function symptomsToIllnesses(symptoms = [], exclusions = []) {
   return session.run(`
         MATCH
           (s: Symptom)<-[:SYMPTOM]-(i: Illness),
@@ -27,7 +27,7 @@ function symptomsToIllnesses(symptoms, exclusions = []) {
 }
 
 
-function findOtherSymptoms(illnesses, symptoms = [], exclusions = []) {
+function findOtherSymptoms(illnesses = [], symptoms = [], exclusions = []) {
   return session.run(`
         UNWIND {illnesses} AS illness
         MATCH (i: Illness), (s: Symptom)
@@ -79,7 +79,7 @@ function getSymptoms(sentence) {
 }
 
 
-function predictIllness(message, symptoms, exclusions) {
+function predictIllness(message, symptoms = [], exclusions = []) {
   return getSymptoms(message)
     .then(extractedSymptoms => {
       const allSymptoms = extractedSymptoms.concat(symptoms)
@@ -97,6 +97,7 @@ function predictIllness(message, symptoms, exclusions) {
             })
         })
     })
+    .catch(err => console.error(err))
 }
 
 module.exports = predictIllness;
