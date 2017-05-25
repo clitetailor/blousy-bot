@@ -6,9 +6,7 @@ function getIllness(sentence) {
   const words = tokenize(sentence);
 
   return session.run(`
-        MATCH (i: Illness)
-        WITH i
-        MATCH (i)<-[:TOKEN]-(w: Word)-[:TOKEN]->(t: Tag)
+        MATCH (i: Illness)<-[:TOKEN]-(w: Word)-[:TOKEN]->(t: Tag)
         WHERE NOT (w = "bệnh")
           AND t.text = "bệnh"
           AND w.text IN {words}
@@ -19,7 +17,7 @@ function getIllness(sentence) {
       { words }
     )
     .then(result => {
-      return getNode(result.record[0], 'illness')
+      return getNode(result.records[0], 'illness')
     })
     .catch(err => console.error(err))
 }
@@ -27,15 +25,14 @@ function getIllness(sentence) {
 
 function illnessSymtomps(illness) {
   return session.run(`
-        MATCH (i: Illness}, (s: Symptom)
-        WHERE (i)-[:Symptom]->(s)
-          AND id(i) = {illness}.id
-        RETURN s AS sentence
+        MATCH (i: Illness)-[:SYMPTOM]->(s: Symptom)
+        WHERE id(i) = {illness}.id
+        RETURN s AS symptom
       `, { illness }
     )
     .then(result => {
       return result.records.map(record => {
-        return getNode(record, 'sentence')
+        return getNode(record, 'symptom')
       })
     })
     .catch(err => console.error(err))
@@ -45,8 +42,10 @@ function illnessSymtomps(illness) {
 function listSymptoms(message) {
   return getIllness(message)
     .then(illness => {
+
       return illnessSymtomps(illness)
         .then(symptoms => {
+
           return {
             type: "list symptoms",
             illness, symptoms

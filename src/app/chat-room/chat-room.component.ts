@@ -45,14 +45,18 @@ export class ChatRoomComponent implements OnInit {
   }
 
   processResponse(response) {
+    console.log(response)
+
     switch (response.type) {
       case "list symptoms": {
         this.messages.push({
           type: 'chat-box',
           username: 'bot',
           time: new Date(),
-          content: `Các triệu chứng của bệnh ${response.illness} là:`,
-          list: response.symptoms
+          content: `Các triệu chứng của bệnh ${response.illness.name} là:`,
+          list: response.symptoms.map(symptom => {
+            return symptom.name
+          })
         })
 
         break;
