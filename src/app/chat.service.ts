@@ -15,9 +15,13 @@ export class ChatService {
       this.socket.on('response', response =>
         observer.next(response)))
 
+    this.responseSource$.subscribe(response => console.log(response))
+
     this.liveResultSource$ = new Observable(observer =>
       this.socket.on('live-result', response =>
         observer.next(response)))
+
+    this.liveResultSource$.subscribe(response => console.log(response))
   }
 
   sendMessage(message, info?) {
