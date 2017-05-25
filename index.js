@@ -1,3 +1,5 @@
+// Keep calm and Functional Programming in NodeJS :D
+
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -10,6 +12,4 @@ app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
 });
 
-io.on('connection', function (socket) {
-  socket.on('message', api.query(socket))
-});
+app.post('chat', (req, res) => api.query(req, res))
