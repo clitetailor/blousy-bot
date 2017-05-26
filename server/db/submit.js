@@ -11,8 +11,8 @@ function symptomsToIllnesses(symptoms = [], exclusions = []) {
           (e: Symptom)<-[:SYMPTOM]-(i),
           (i)-[:SYMPTOM]->(sl: Symptom)
         WHERE
-          id(s) IN extract(symptom IN {symptoms} | symptom.id)
-          AND NOT id(e) IN extract(symptom IN {exclusions} | symptom.id)
+          id(s) IN extract(symptom IN {symptoms} | toInteger(symptom.id))
+          AND NOT id(e) IN extract(symptom IN {exclusions} | toInteger(symptom.id))
         WITH
           i, sl,
           count(s) - count(e) * 0.3 AS rank
@@ -38,10 +38,10 @@ function findOtherSymptoms(illnesses = [], symptoms = [], exclusions = []) {
   return session.run(`
         UNWIND {illnesses} AS illness
         MATCH (i: Illness), (s: Symptom)
-        WHERE id(i) = illness.id
+        WHERE id(i) = toInteger(illness.id)
           AND (i)-[:SYMPTOM]->(s)
-          AND NOT id(s) IN extract(es IN {symptoms} | es.id)
-          AND NOT id(s) IN extract(ee IN {exclusions} | ee.id)
+          AND NOT id(s) IN extract(es IN {symptoms} | toInteger(es.id))
+          AND NOT id(s) IN extract(ee IN {exclusions} | toInteger(ee.id))
         RETURN
           s AS symptom
         LIMIT 5
@@ -86,25 +86,20 @@ function getSymptoms(sentence) {
 }
 
 
-function predictIllness(message, symptoms = [], exclusions = []) {
-  return getSymptoms(message)
-    .then(extractedSymptoms => {
-      const allSymptoms = extractedSymptoms.concat(symptoms)
+function submit(symptoms, exclusions) {
+  return symptomsToIllnesses(symptoms, exclusions)
+    .then(illnesses => {
 
-      return symptomsToIllnesses(allSymptoms, exclusions)
-        .then(illnesses => {
+      return findOtherSymptoms(illnesses, symptoms, exclusions)
+        .then(otherSymptoms => {
 
-          return findOtherSymptoms(illnesses, allSymptoms, exclusions)
-            .then(otherSymptoms => {
-
-              return {
-                type: "predict illness",
-                illnesses, otherSymptoms, extractedSymptoms
-              }
-            })
+          return {
+            type: "predict illness",
+            extractedSymptoms: symptoms,
+            illnesses, otherSymptoms
+          }
         })
     })
-    .catch(err => console.error(err))
 }
 
-module.exports = predictIllness;
+module.exports = submit;

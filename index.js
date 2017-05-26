@@ -31,3 +31,7 @@ Else, run `ng serve`.
 app.post('/chatting', function (req, res) {
   api.query(req, res);
 })
+
+app.post('/submit', (req, res) => {
+  api.submit(req, res);
+})

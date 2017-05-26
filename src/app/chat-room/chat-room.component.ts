@@ -46,8 +46,11 @@ export class ChatRoomComponent implements OnInit {
     if (this.lastResponse) {
       const otherSymptoms = this.lastResponse.otherSymptoms;
 
-      (<Message.ICheckBoxes> this.messages.slice(-1, 0)[0])
+      (<Message.ICheckBoxes> this.messages.slice(-1)[0])
         .content.checklist.forEach((item, i) => {
+          this.symptoms = this.symptoms || [];
+          this.exclusions = this.exclusions || []
+
           if (item.checked) {
             this.symptoms.push(
               otherSymptoms[i]
@@ -59,6 +62,8 @@ export class ChatRoomComponent implements OnInit {
             )
           }
         })
+
+      console.log(this.symptoms, this.exclusions)
 
       this.chatService.submit(this.symptoms, this.exclusions)
         .then(response => this.processResponse(response));
@@ -100,6 +105,10 @@ export class ChatRoomComponent implements OnInit {
       case "predict illness": {
         this.symptoms = response.symptoms;
         this.exclusions = response.exclusions;
+
+        const extractedSymptoms = response.extractedSymptoms;
+        this.symptoms = this.symptoms || [];
+        this.symptoms = this.symptoms.concat(extractedSymptoms);
 
         this.messages.push({
           type: 'checkboxes',
