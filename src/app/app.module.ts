@@ -11,12 +11,12 @@ import { ChatBoxComponent } from './chat-room/chat-box/chat-box.component';
 import { CheckboxesComponent } from './chat-room/checkboxes/checkboxes.component';
 import { ResultListItemComponent } from './chat-room/result-list-item/result-list-item.component';
 
-import { ChatService } from './chat.service'
+import { ChatService } from './chat.service';
 
 const appRoutes = [
   { path: '', component: HomePageComponent },
   { path: 'chat', component: ChatRoomComponent }
-]
+];
 
 @NgModule({
   declarations: [

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import * as Message from '../message'
+import * as Message from '../message';
 
 @Component({
   selector: 'app-checkboxes',

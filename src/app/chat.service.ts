@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http'
-import 'rxjs/add/Operator/toPromise'
+import { Http } from '@angular/http';
+import 'rxjs/add/Operator/toPromise';
 
 @Injectable()
 export class ChatService {
@@ -12,7 +12,7 @@ export class ChatService {
         { message }
       )
       .toPromise<any>()
-      .then(data => this.extractData(data))
+      .then(data => this.extractData(data));
   }
 
   submit(symptoms, exclusions) {
@@ -21,7 +21,7 @@ export class ChatService {
         { symptoms, exclusions }
       )
       .toPromise<any>()
-      .then(data => this.extractData(data))
+      .then(data => this.extractData(data));
   }
 
   extractData(data) {

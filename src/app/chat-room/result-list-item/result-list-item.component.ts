@@ -18,5 +18,5 @@ export class ResultListItemComponent implements OnInit {
   @Input('info') info: string;
   @Input('list') list: string[];
 
-  collapse: boolean = true;
+  collapse = true;
 }
