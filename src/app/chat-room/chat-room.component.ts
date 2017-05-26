@@ -22,6 +22,8 @@ export class ChatRoomComponent implements OnInit {
   private exclusions = [];
   private symptoms = [];
 
+  private lastResponse;
+
   constructor(private chatService: ChatService) { }
 
   ngOnInit() { }
@@ -41,13 +43,35 @@ export class ChatRoomComponent implements OnInit {
   }
 
   submit() {
+    if (this.lastResponse) {
+      const otherSymptoms = this.lastResponse.otherSymptoms;
 
+      (<Message.ICheckBoxes> this.messages.slice(-1, 0)[0])
+        .content.checklist.forEach((item, i) => {
+          if (item.checked) {
+            this.symptoms.push(
+              otherSymptoms[i]
+            )
+          }
+          else {
+            this.exclusions.push(
+              otherSymptoms[i]
+            )
+          }
+        })
+
+      this.chatService.submit(this.symptoms, this.exclusions)
+        .then(response => this.processResponse(response));
+    }
   }
 
   processResponse(response) {
     console.log(response)
 
+    this.lastResponse = response;
+
     switch (response.type) {
+
       case "list symptoms": {
         this.messages.push({
           type: 'chat-box',

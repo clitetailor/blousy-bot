@@ -15,6 +15,15 @@ export class ChatService {
       .then(data => this.extractData(data))
   }
 
+  submit(symptoms, exclusions) {
+    return this.http.post(
+        'http://localhost:80/submit',
+        { symptoms, exclusions }
+      )
+      .toPromise<any>()
+      .then(data => this.extractData(data))
+  }
+
   extractData(data) {
     return data.json();
   }

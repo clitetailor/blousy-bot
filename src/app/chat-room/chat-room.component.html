@@ -68,7 +68,7 @@
                     </div>
 
                     <div *ngSwitchCase="'checkboxes'">
-                      <app-checkboxes [checklist]="message.content.checklist">
+                      <app-checkboxes [checklist]="message.content.checklist" (submit)="submit()">
                         {{message.content.title}}
                       </app-checkboxes>
                     </div>
